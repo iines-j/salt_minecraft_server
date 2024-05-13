@@ -1,0 +1,9 @@
+[Unit]
+Description=Starts a Minecraft server
+
+[Service]
+ExecStart=/usr/local/bin/serverscript
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
