@@ -39,7 +39,7 @@ java:
     - cwd: /home/vagrant
     - reload_modules: True
 
-minecraft:
+minecraft_server:
   file.managed:
     - name: /home/minecraft/server.jar
     - source: https://piston-data.mojang.com/v1/objects/84194a2f286ef7c14ed7ce0090dba59902951553/server.jar 
@@ -56,24 +56,24 @@ eula:
 
 script:
   file.managed:
-    - name: /usr/local/bin/example
-    - source: "salt://minecraft/example"
+    - name: /usr/local/bin/serverscript
+    - source: "salt://minecraft/serverscript"
 
-chmod ugo+x /usr/local/bin/example:
+chmod ugo+x /usr/local/bin/serverscript:
   cmd.run:
     - onchanges:
       - file: script
 
 unitfile:
   file.managed:
-    - name: /etc/systemd/system/test.service
-    - source: "salt://minecraft/test.service"
+    - name: /etc/systemd/system/runserver.service
+    - source: "salt://minecraft/runserver.service"
 
 systemctl daemon-reload:
   cmd.run:
     - onchanges:
       - file: unitfile
 
-systemctl start test.service:
+systemctl start runserver.service:
   cmd.run:
-    - unless: "systemctl status test.service | grep 'Succeeded'"
+    - unless: "systemctl status runserver.service | grep 'Succeeded'"
